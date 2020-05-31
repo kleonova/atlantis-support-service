@@ -33,6 +33,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$whidesidebar: 50px;
+$wopensidebar: 200px;
+
 .app-main-layout {
   position: relative;
   min-height: 100vh;
@@ -40,10 +43,10 @@ export default {
 
 .app-content {
   position: relative;
-  padding-left: 210px;
+  padding-left: $wopensidebar + 10px;
 }
 
 .full {
-  padding-left: 10px;
+  padding-left: $whidesidebar + 10px;
 }
 </style>

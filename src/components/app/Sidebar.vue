@@ -1,5 +1,5 @@
 <template>
-  <ul class="sidenav app-sidenav collection" :class="{ open: value }">
+  <ul class="sidenav app-sidenav" :class="widthSidebar">
     <router-link
       v-for="link in links"
       :key="link.url"
@@ -7,7 +7,10 @@
       :to="link.url"
       :exact="link.exact"
     >
-      <a class="collection-item">{{ link.title }}</a>
+      <a :class="{ boxed: !value }">
+        <i class="material-icons" v-if="!value">{{ link.image }}</i>
+        <span v-if="value">{{ link.title }}</span>
+      </a>
     </router-link>
   </ul>
 </template>
@@ -18,24 +21,32 @@ export default {
   props: ["value"],
   data: () => ({
     links: [
-      { title: "HOME", url: "/", exact: true },
-      { title: "Личный кабинет", url: "/private-office" },
-      { title: "Счета", url: "/private-bills" },
-      { title: "service-office", url: "/service-office" },
-      { title: "login", url: "/login" },
-      { title: "register", url: "/register" }
+      { title: "HOME", url: "/", image: "home", exact: true },
+      { title: "Личный кабинет", url: "/private-office", image: "account_box" },
+      { title: "Счета", url: "/private-bills", image: "attach_money" },
+      {
+        title: "service-office",
+        url: "/service-office",
+        image: "business_center"
+      }
     ]
-  })
+  }),
+  computed: {
+    widthSidebar() {
+      return this.value ? "open" : "close";
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+$whidesidebar: 50px;
+$wopensidebar: 200px;
+
 .app-sidenav {
   padding-top: 84px;
 }
-</style>
 
-<style lang="scss" scoped>
 .app-sidenav {
   padding-top: 5px;
   top: 65px;
@@ -49,5 +60,28 @@ export default {
 .app-sidenav.open {
   -webkit-transform: translateX(0);
   transform: translateX(0);
+  width: $wopensidebar;
+}
+
+.app-sidenav.close {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+  width: $whidesidebar;
+}
+
+.collection-item {
+  &.boxed {
+    margin: auto;
+    align-self: center;
+  }
+}
+
+.router-link-active {
+  background-color: #cccccc;
+  a {
+    span {
+      font-weight: bold;
+    }
+  }
 }
 </style>

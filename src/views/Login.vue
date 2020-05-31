@@ -4,17 +4,45 @@
       <div class="panel">
         <div class="panel-body">
           <div class="brand">
-            <img class="brand-img" src="../assets/images/logo.svg" alt="logo" />
-            <h2 class="brand-text">Атлантида</h2>
+            <i class="large material-icons yellow-text">account_balance</i>
+            <h2 class="brand-text">ЖКХ Атлантида</h2>
           </div>
-          <form method="post" action="#" autocomplete="off">
+          <form method="post" @submit.prevent="submitForm">
             <div class="form-group">
-              <input type="email" class="form-control" name="email" />
               <label class="floating-label">Электронная почта</label>
+              <input
+                type="text"
+                class="form-control"
+                name="email"
+                v-model.trim="email"
+                :class="{ invalid: validEmail }"
+              />
+              <span
+                class="helper-text invalid"
+                v-if="$v.email.$dirty && !$v.email.required"
+              >
+                Во имя Посейдона, заполни email
+              </span>
+              <span
+                class="helper-text invalid"
+                v-else-if="$v.email.$dirty && !$v.email.email"
+              >
+                Во имя Посейдона, заполни email нормально
+              </span>
             </div>
+
             <div class="form-group">
-              <input type="password" class="form-control" name="password" />
               <label class="floating-label">Пароль</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                v-model.trim="password"
+                :class="{ invalid: validPassword }"
+              />
+              <span class="helper-text invalid" v-if="validPassword">
+                Во имя Посейдона, заполни пароль
+              </span>
             </div>
             <div class="form-group block-actions">
               <label>
@@ -32,7 +60,7 @@
           </form>
           <p class="text-center">
             Впервые у нас? Тогда вам нужна
-            <a href="register-v3.html">Регистрация</a>
+            <router-link tag="a" to="/register">Регистрация</router-link>
           </p>
         </div>
       </div>
@@ -57,8 +85,52 @@
 </template>
 
 <script>
+import { required, email } from "vuelidate/lib/validators";
+
 export default {
-  name: "Login"
+  name: "Login",
+  data: () => ({
+    email: "",
+    password: ""
+  }),
+  validations: {
+    email: {
+      email,
+      required
+    },
+    password: {
+      required
+    }
+  },
+  methods: {
+    async submitForm() {
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        return;
+      }
+
+      const formData = {
+        email: this.email,
+        password: this.password
+      };
+      try {
+        await this.$store.dispatch("login", formData);
+        this.$router.push("/");
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
+    }
+  },
+  computed: {
+    validEmail() {
+      return (
+        (this.$v.email.$dirty && !this.$v.email.required) ||
+        (this.$v.email.$dirty && !this.$v.email.email)
+      );
+    },
+    validPassword() {
+      return this.$v.password.$dirty && !this.$v.password.required;
+    }
+  }
 };
 </script>
 

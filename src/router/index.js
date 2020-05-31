@@ -24,6 +24,12 @@ const routes = [
     component: () => import("../views/Register.vue") // lazyload
   },
   {
+    path: "/profile",
+    name: "Profile",
+    meta: { layout: "main" },
+    component: () => import("../views/Profile.vue")
+  },
+  {
     path: "/private-office",
     name: "PrivateOffice",
     meta: { layout: "main" },

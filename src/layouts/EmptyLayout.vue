@@ -5,8 +5,20 @@
 </template>
 
 <script>
+import messages from "@/utils/message";
 export default {
-  name: "EmptyLayout"
+  name: "EmptyLayout",
+  computed: {
+    error() {
+      return this.$store.getters.error;
+    }
+  },
+  watch: {
+    error(fbError) {
+      console.log(fbError.code);
+      alert(messages[fbError.code] || "Что-то пошло не так");
+    }
+  }
 };
 </script>
 

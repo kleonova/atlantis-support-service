@@ -4,25 +4,87 @@
       <div class="panel">
         <div class="panel-body">
           <div class="brand">
-            <img class="brand-img" src="../assets/images/logo.svg" alt="logo" />
-            <h2 class="brand-text">Атлантида</h2>
+            <i class="large material-icons yellow-text">account_balance</i>
+            <h2 class="brand-text">ЖКХ Атлантида</h2>
           </div>
-          <form method="post" action="#" autocomplete="off">
+
+          <form method="post" @submit.prevent="submitForm">
             <div class="form-group">
-              <input type="email" class="form-control" name="email" />
               <label class="floating-label">Электронная почта</label>
+              <input
+                type="text"
+                class="form-control"
+                name="email"
+                v-model.trim="email"
+                :class="{ invalid: validEmail }"
+              />
+              <span
+                class="helper-text invalid"
+                v-if="$v.email.$dirty && !$v.email.required"
+              >
+                Во имя Посейдона, заполни email
+              </span>
+              <span
+                class="helper-text invalid"
+                v-else-if="$v.email.$dirty && !$v.email.email"
+              >
+                Во имя Посейдона, заполни email нормально
+              </span>
             </div>
+
             <div class="form-group">
-              <input type="password" class="form-control" name="password" />
               <label class="floating-label">Пароль</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                v-model.trim="password"
+                :class="{ invalid: validPassword }"
+              />
+              <span
+                class="helper-text invalid"
+                v-if="$v.password.$dirty && !$v.password.required"
+              >
+                Во имя Посейдона, заполни пароль
+              </span>
+              <span
+                class="helper-text invalid"
+                v-else-if="$v.password.$dirty && !$v.password.minLength"
+              >
+                Пароль должен быть длинее, чем хвост Сатира (от 6 символов)
+              </span>
             </div>
+
             <div class="form-group">
-              <input type="text" class="form-control" name="password" />
               <label class="floating-label">Номер договора</label>
+              <input
+                type="text"
+                class="form-control"
+                name="contract"
+                v-model.trim="contract"
+                :class="{ invalid: validContract }"
+              />
+              <span
+                class="helper-text invalid"
+                v-if="$v.contract.$dirty && !$v.contract.required"
+              >
+                Введи номер договора
+              </span>
+              <span
+                class="helper-text invalid"
+                v-else-if="$v.contract.$dirty && !$v.contract.numeric"
+              >
+                В номере договора должны быть только цифры
+              </span>
             </div>
             <div class="form-group block-actions">
               <label>
-                <input type="checkbox" class="filled-in" checked="checked" />
+                <input
+                  type="checkbox"
+                  class="filled-in"
+                  checked="checked"
+                  v-model="agree"
+                />
                 <span>С правилами ознакомлен</span>
               </label>
               <a href="#">Правила</a>
@@ -36,7 +98,7 @@
           </form>
           <p class="text-center">
             Уже есть аккаунт?
-            <a href="register-v3.html">Войти</a>
+            <router-link tag="a" to="/login">Войти</router-link>
           </p>
         </div>
       </div>
@@ -50,8 +112,70 @@
 </template>
 
 <script>
+import { required, email, numeric, minLength } from "vuelidate/lib/validators";
+
 export default {
-  name: "Register"
+  name: "Register",
+  data: () => ({
+    email: "",
+    password: "",
+    contract: "",
+    agree: false
+  }),
+  validations: {
+    email: {
+      email,
+      required
+    },
+    password: {
+      required,
+      minLength: minLength(6)
+    },
+    contract: {
+      required,
+      numeric
+    },
+    agree: { checked: v => v }
+  },
+  methods: {
+    async submitForm() {
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        return;
+      }
+
+      const formData = {
+        email: this.email,
+        password: this.password,
+        contract: this.contract
+      };
+      try {
+        await this.$store.dispatch("register", formData);
+        this.$router.push("/");
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
+    }
+  },
+  computed: {
+    validEmail() {
+      return (
+        (this.$v.email.$dirty && !this.$v.email.required) ||
+        (this.$v.email.$dirty && !this.$v.email.email)
+      );
+    },
+    validPassword() {
+      return (
+        (this.$v.password.$dirty && !this.$v.password.required) ||
+        (this.$v.password.$dirty && !this.$v.password.minLength)
+      );
+    },
+    validContract() {
+      return (
+        (this.$v.contract.$dirty && !this.$v.contract.required) ||
+        (this.$v.contract.$dirty && !this.$v.contract.numeric)
+      );
+    }
+  }
 };
 </script>
 
