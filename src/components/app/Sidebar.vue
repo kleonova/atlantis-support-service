@@ -1,5 +1,5 @@
 <template>
-  <ul class="sidenav app-sidenav" :class="widthSidebar">
+  <ul class="sidenav app-sidenav" :class="classWidthSidebar">
     <router-link
       v-for="link in links"
       :key="link.url"
@@ -8,8 +8,10 @@
       :exact="link.exact"
     >
       <a :class="{ boxed: !value }">
-        <i class="material-icons" v-if="!value">{{ link.image }}</i>
         <span v-if="value">{{ link.title }}</span>
+        <i class="material-icons center" v-if="!value">
+          {{ link.image }}
+        </i>
       </a>
     </router-link>
   </ul>
@@ -32,7 +34,7 @@ export default {
     ]
   }),
   computed: {
-    widthSidebar() {
+    classWidthSidebar() {
       return this.value ? "open" : "close";
     }
   }
@@ -48,7 +50,7 @@ $wopensidebar: 200px;
 }
 
 .app-sidenav {
-  padding-top: 5px;
+  padding-top: 0;
   top: 65px;
   width: 200px;
   transition: transform 0.3s;
@@ -69,11 +71,9 @@ $wopensidebar: 200px;
   width: $whidesidebar;
 }
 
-.collection-item {
-  &.boxed {
-    margin: auto;
-    align-self: center;
-  }
+.boxed {
+  padding: 0;
+  margin: 0 auto;
 }
 
 .router-link-active {

@@ -1,16 +1,18 @@
 <template>
   <nav class="yellow">
     <div class="nav-wrapper">
-      <router-link class="brand-logo" tag="a" to="/">
-        <i class="large material-icons">account_balance</i>
-        <span v-if="stateSidebar">ЖКХ Атлантида</span>
+      <router-link class="brand-logo left " tag="a" to="/">
+        <i class="material-icons">account_balance</i>
+        <span v-if="value">
+          ЖКХ Атлантида
+        </span>
       </router-link>
 
       <ul class="left" :class="widthSidebar">
         <li>
           <a href="#" @click.prevent="changeSidebar">
-            <i class="material-icons" v-if="!stateSidebar">dehaze</i>
-            <i class="material-icons" v-if="stateSidebar">arrow_back</i>
+            <i class="material-icons" v-if="!value">dehaze</i>
+            <i class="material-icons" v-if="value">arrow_back</i>
           </a>
         </li>
       </ul>
@@ -57,7 +59,7 @@ import M from "materialize-css";
 
 export default {
   name: "Navbar",
-  props: ["isSidebarOpen"],
+  props: ["value"],
   data: () => ({
     stateSidebar: true
   }),
@@ -73,13 +75,13 @@ export default {
   },
   computed: {
     widthSidebar() {
-      return this.stateSidebar ? "opened-sidebar" : "hided-sidebar";
+      return this.value ? "opened-sidebar" : "hided-sidebar";
     }
   },
   mounted() {
     this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
-      constrainWidth: true,
-      alignment: "bottom"
+      constrainWidth: false,
+      coverTrigger: false
     });
   },
   beforeDestroy() {
@@ -107,5 +109,12 @@ $wopensidebar: 200px;
 
 .opened-sidebar {
   padding-left: $wopensidebar;
+}
+
+.dropdown-content {
+  li > a {
+    font-size: 0.8rem;
+    color: grey;
+  }
 }
 </style>

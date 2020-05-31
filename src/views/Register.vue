@@ -10,6 +10,16 @@
 
           <form method="post" @submit.prevent="submitForm">
             <div class="form-group">
+              <label class="floating-label">Имя</label>
+              <input
+                type="text"
+                class="form-control"
+                name="email"
+                v-model.trim="username"
+              />
+            </div>
+
+            <div class="form-group">
               <label class="floating-label">Электронная почта</label>
               <input
                 type="text"
@@ -120,6 +130,7 @@ export default {
     email: "",
     password: "",
     contract: "",
+    username: "",
     agree: false
   }),
   validations: {
@@ -147,7 +158,8 @@ export default {
       const formData = {
         email: this.email,
         password: this.password,
-        contract: this.contract
+        contract: this.contract,
+        username: this.username
       };
       try {
         await this.$store.dispatch("register", formData);

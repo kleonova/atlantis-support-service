@@ -1,10 +1,10 @@
 <template>
   <div class="app-main-layout">
-    <Navbar @click="isSidebarOpen = !isSidebarOpen" />
+    <Navbar @click="isSidebarOpen = !isSidebarOpen" v-model="widthSidebar" />
 
-    <Sidebar v-model="isSidebarOpen" />
+    <Sidebar v-model="widthSidebar" />
 
-    <main class="app-content" :class="{ full: !isSidebarOpen }">
+    <main class="app-content" :class="{ full: !widthSidebar }">
       <div class="app-page">
         <router-view />
       </div>
@@ -26,9 +26,34 @@ export default {
   name: "MainLayout",
   components: { Navbar, Sidebar },
   data: () => ({
-    isSidebarOpen: true
+    isSidebarOpen: true,
+    windowWidth: 0
   }),
-  methods: {}
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    }
+  },
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  computed: {
+    widthSidebar() {
+      let isDesc = this.windowWidth > 768 ? true : false;
+      return this.isSidebarOpen && isDesc;
+    }
+  },
+  watch: {
+    windowWidth: function() {
+      if (this.windowWidth === 768) {
+        console.log("The window width is 768px");
+      }
+    }
+  }
 };
 </script>
 

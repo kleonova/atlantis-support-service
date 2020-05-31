@@ -15,7 +15,10 @@ export default {
     async logout() {
       await firebase.auth().signOut();
     },
-    async register({ dispatch, commit }, { email, password, contract }) {
+    async register(
+      { dispatch, commit },
+      { email, password, contract, username }
+    ) {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password);
         const uid = await dispatch("getUid"); //await превращает promise в значение
@@ -23,7 +26,7 @@ export default {
           .database()
           .ref(`/users/${uid}/info`)
           .set({
-            username: "",
+            username,
             contract
           });
       } catch (e) {
