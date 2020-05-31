@@ -1,23 +1,49 @@
 <template>
-  <div class="main-layout">
-    <nav>
-      1
-    </nav>
-    <main role="main" class="conteiner">
-      <router-view />
+  <div class="app-main-layout">
+    <Navbar @click="isSidebarOpen = !isSidebarOpen" />
+
+    <Sidebar v-model="isSidebarOpen" />
+
+    <main class="app-content" :class="{ full: !isSidebarOpen }">
+      <div class="app-page">
+        <router-view />
+      </div>
     </main>
+
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large blue" href="#">
+        <i class="large material-icons">add</i>
+      </a>
+    </div>
   </div>
 </template>
 
 <script>
+import Navbar from "@/components/app/Navbar.vue";
+import Sidebar from "@/components/app/Sidebar.vue";
+
 export default {
-  name: "MainLayout"
+  name: "MainLayout",
+  components: { Navbar, Sidebar },
+  data: () => ({
+    isSidebarOpen: true
+  }),
+  methods: {}
 };
 </script>
 
-<style scoped>
-.main-layout {
-  min-height: 75rem;
-  padding-top: 4.5rem;
+<style lang="scss" scoped>
+.app-main-layout {
+  position: relative;
+  min-height: 100vh;
+}
+
+.app-content {
+  position: relative;
+  padding-left: 210px;
+}
+
+.full {
+  padding-left: 10px;
 }
 </style>

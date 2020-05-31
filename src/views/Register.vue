@@ -16,23 +16,27 @@
               <input type="password" class="form-control" name="password" />
               <label class="floating-label">Пароль</label>
             </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="password" />
+              <label class="floating-label">Номер договора</label>
+            </div>
             <div class="form-group block-actions">
               <label>
                 <input type="checkbox" class="filled-in" checked="checked" />
-                <span>Запомнить</span>
+                <span>С правилами ознакомлен</span>
               </label>
-              <a href="forgot-password.html">Забыли пароль?</a>
+              <a href="#">Правила</a>
             </div>
             <button
               type="submit"
               class="btn btn-block waves-effect waves-light"
             >
-              Войти
+              Создать аккаунт
             </button>
           </form>
           <p class="text-center">
-            Впервые у нас? Тогда вам нужна
-            <a href="register-v3.html">Регистрация</a>
+            Уже есть аккаунт?
+            <a href="register-v3.html">Войти</a>
           </p>
         </div>
       </div>
@@ -40,17 +44,6 @@
       <footer>
         <p>WEBSITE BY Germes Creation Studio</p>
         <p>© 2020. All RIGHT RESERVED.</p>
-        <!--<div class="social">
-          <a class="btn btn-icon btn-pure" href="javascript:void(0)">
-            <i class="icon bd-twitter" aria-hidden="true"></i>
-          </a>
-          <a class="btn btn-icon btn-pure" href="javascript:void(0)">
-            <i class="icon bd-facebook" aria-hidden="true"></i>
-          </a>
-          <a class="btn btn-icon btn-pure" href="javascript:void(0)">
-            <i class="icon bd-google-plus" aria-hidden="true"></i>
-          </a>
-        </div>-->
       </footer>
     </div>
   </div>
@@ -58,7 +51,7 @@
 
 <script>
 export default {
-  name: "Login"
+  name: "Register"
 };
 </script>
 
