@@ -25,12 +25,12 @@ export default {
     links: [
       { title: "HOME", url: "/", image: "home", exact: true },
       { title: "Личный кабинет", url: "/private-office", image: "account_box" },
-      { title: "Счета", url: "/private-bills", image: "attach_money" },
-      {
+      { title: "Счета", url: "/private-bills", image: "attach_money" }
+      /*{
         title: "service-office",
         url: "/service-office",
         image: "business_center"
-      }
+      }*/
     ]
   }),
   computed: {

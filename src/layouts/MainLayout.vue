@@ -41,6 +41,12 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
   },
+  async mounted() {
+    //проверяем, что нет записи
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch("fetchInfo");
+    }
+  },
   computed: {
     widthSidebar() {
       let isDesc = this.windowWidth > 768 ? true : false;
